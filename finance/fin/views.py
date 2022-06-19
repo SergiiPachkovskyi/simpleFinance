@@ -187,6 +187,3 @@ class RemoveCashFlow(DeleteView):
 
 def cash_flow_delete_error(request):
     return render(request, template_name='fin/article_delete_error.html')
-
-
-

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+{{block.super}} : Додавання руху коштів
+{% endblock %}
+
+{% block content %}
+
+<h1>Simple Finance!</h1>
+<h2><a href="{% url 'cash_flows' %}">Рух коштів</a></h2>
+<h2>Додавання руху коштів</h2>
+<form action="{% url 'add_cash_flow' %}" method="post">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Додати</button>
+</form>
+
+{% endblock %}

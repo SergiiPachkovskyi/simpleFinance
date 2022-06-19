@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+{{block.super}} : Статті
+{% endblock %}
+
+{% block content %}
+
+<h1>Simple Finance</h1>
+
+<h2>Статті</h2>
+<a href="{% url 'add_article' %}">Додати статтю</a>
+{% for art in articles %}
+<p>
+    <a href="{% url 'remove_article' art.pk %}"><img src="{% static 'finance/images/delete.png' %}" width="15" title="Видалити"></a>
+    {% if art.photo %}
+    <img src="{{ art.photo.url }}" width="50">
+    {% else %}
+    <img src="{% static 'finance/images/photo.png' %}" width="50">
+    {% endif %}
+    {{ art.title }}
+</p>
+{% endfor %}
+
+{% endblock %}

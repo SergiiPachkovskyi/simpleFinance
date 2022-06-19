@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+{{block.super}} : Авторизація
+{% endblock %}
+
+{% block content %}
+
+<h1>Simple Finance!</h1>
+<h2>Авторизація</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Авторизація</button>
+</form>
+
+{% endblock %}

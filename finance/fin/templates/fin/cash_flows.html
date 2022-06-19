@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+{{block.super}} : Рух коштів
+{% endblock %}
+
+{% block content %}
+
+<h1>Simple Finance</h1>
+
+<h2>Рух коштів</h2>
+<a href="{% url 'add_cash_flow' %}">Додати рух коштів</a>
+{% for cf in cash_flows %}
+<p>
+    <a href="{% url 'remove_cash_flow' cf.pk %}"><img src="{% static 'finance/images/delete.png' %}" width="15" title="Видалити"></a>
+    {{ cf.fin_month|date:"m-Y"  }} {{ cf.article }} {{ cf.sum }}
+</p>
+{% endfor %}
+
+{% endblock %}

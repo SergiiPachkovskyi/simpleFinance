@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+{{block.super}} : Помилка видалення руху коштів
+{% endblock %}
+
+{% block content %}
+
+<h1>Simple Finance</h1>
+<h2><a href="{% url 'cash_flows' %}">Рух коштів</a></h2>
+
+<h2>Помилка видалення!</h2>
+<h2>Існують посилання на об'єкт</h2>
+
+{% endblock %}

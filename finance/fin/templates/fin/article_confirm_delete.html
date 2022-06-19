@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+{{block.super}} : Видалення статті
+{% endblock %}
+
+{% block content %}
+
+<h1>Simple Finance</h1>
+<h2><a href="{% url 'articles' %}">Статті</a></h2>
+
+<form method="post">
+    {% csrf_token %}
+    <p>Ви впевнені, що хочете видалити статтю "{{ object }}"?</p>
+    {{ form }}
+    <input type="submit" value="Підтвердити">
+</form>
+
+{% endblock %}

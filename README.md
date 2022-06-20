@@ -1,5 +1,5 @@
 # Project name
-simpleFinance
+Simple Finance
 
 # General info
 A small program to solve home financial problems

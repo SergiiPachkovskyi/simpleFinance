@@ -15,3 +15,6 @@ A small program to solve home financial problems
 
 # Setup
 To run the project install libraries specified in requirements.txt
+
+# Status
+Project is: in progress

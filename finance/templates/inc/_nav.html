@@ -1,13 +1,25 @@
-<div>
-    <span>
-    <a href="{% url 'home' %}">Головна</a>
-    </span>
+<div class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="col-md-10">
+            <div class="navbar-header">
+                <a href="{% url 'home' %}" class="navbar-brand">SIMPLE <text class="text-warning">FINANCE</text></a>
+            </div>
+        </div>
 
-    <span>
-    {% if request.user.is_authenticated %}
-    Ласкаво просимо, {{ user.username }} | <a href="{% url 'logout' %}">Вихід</a>
-    {% else %}
-    <a href="{% url 'login' %}">Вхід</a> | <a href="{% url 'registration' %}">Реєстрація</a>
-    {% endif %}
-    </span>
+        <div class="col-md-2 text-light">
+            {% if request.user.is_authenticated %}
+            Ласкаво просимо, <strong>{{ user.username }}</strong>
+            <button type="button" class="btn btn-outline-light me-2"><a href="{% url 'logout' %}"
+                                                                        class="text-decoration-none text-reset">Вихід</a>
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-outline-light me-2"><a href="{% url 'login' %}"
+                                                                        class="text-decoration-none text-reset">Вхід</a>
+            </button>
+            <button type="button" class="btn btn-outline-light me-2"><a href="{% url 'registration' %}"
+                                                                        class="text-decoration-none text-reset">Реєстрація</a>
+            </button>
+            {% endif %}
+        </div>
+    </div>
 </div>

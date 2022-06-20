@@ -8,9 +8,16 @@
 
 {% block content %}
 
-<h1>Simple Finance!</h1>
-<h2><a href="{% url 'articles' %}">Статті</a></h2>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-reset">Головна</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'articles' %}" class="text-decoration-none text-reset">Статті</a></li>
+        <li class="breadcrumb-item" aria-current="page">Додавання статті</li>
+    </ol>
+</nav>
+
 <h2>Додавання статті</h2>
+
 <form action="{% url 'add_article' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
 

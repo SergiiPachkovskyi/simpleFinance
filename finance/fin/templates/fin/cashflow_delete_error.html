@@ -8,10 +8,17 @@
 
 {% block content %}
 
-<h1>Simple Finance</h1>
-<h2><a href="{% url 'cash_flows' %}">Рух коштів</a></h2>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-reset">Головна</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'cash_flows' %}" class="text-decoration-none text-reset">Рух коштів</a></li>
+        <li class="breadcrumb-item" aria-current="page">Видалення руху коштів</li>
+    </ol>
+</nav>
 
-<h2>Помилка видалення!</h2>
-<h2>Існують посилання на об'єкт</h2>
+<h2>Видалення руху коштів</h2>
+
+<h4 class="text-danger">Помилка видалення!</h4>
+<h4 class="text-danger">Існують посилання на об'єкт</h4>
 
 {% endblock %}

@@ -11,47 +11,55 @@
 {% block content %}
 
 {% if request.user.is_authenticated %}
-<h1>Simple Finance</h1>
-<h2><a href="{% url 'articles' %}">Статті</a></h2>
-{% for art in articles %}
-<p>
-    {% if art.photo %}
-    <img src="{{ art.photo.url }}" width="50">
-    {% else %}
-    <img src="{% static 'finance/images/photo.png' %}" width="50">
-    {% endif %}
-    {{ art.title }}
-</p>
-{% endfor %}
-<br>
 
-<h2><a href="{% url 'cash_flows' %}">Рух коштів</a></h2>
-{% if current_year %}
-<h2>Рух коштів за {{ str_month }}-{{ current_year }}</h2>
-<h3>Прибутки</h3>
-{% for cf in cash_flows %}
+<div class="row">
+    <div class="col-md-3">
+        <h2><a href="{% url 'articles' %}">Статті</a></h2>
+        {% for art in articles %}
+        <p>
+            {% if art.photo %}
+            <img src="{{ art.photo.url }}" width="50">
+            {% else %}
+            <img src="{% static 'finance/images/photo.png' %}" width="50">
+            {% endif %}
+            {{ art.title }}
+        </p>
+        {% endfor %}
+        <br>
+    </div>
 
-{% if current_month == cf.fin_month.month and current_year == cf.fin_month.year and cf.is_profit %}
-<p>{{ cf.fin_month|date:"m-Y" }} {{ cf.article }} {{ cf.sum }}</p>
-{% endif %}
+    <div class="col-md-6">
+        <h2><a href="{% url 'cash_flows' %}">Рух коштів</a></h2>
+        {% if current_year %}
+        <h2>Рух коштів за {{ str_month }}-{{ current_year }}</h2>
+        <h3>Прибутки</h3>
+        {% for cf in cash_flows %}
 
-{% endfor %}
+        {% if current_month == cf.fin_month.month and current_year == cf.fin_month.year and cf.is_profit %}
+        <p>{{ cf.fin_month|date:"m-Y" }} {{ cf.article }} {{ cf.sum }}</p>
+        {% endif %}
 
-<h3>Видатки</h3>
-{% for cf in cash_flows %}
+        {% endfor %}
 
-{% if current_month == cf.fin_month.month and current_year == cf.fin_month.year and not cf.is_profit %}
-<p>{{ cf.fin_month|date:"m-Y" }} {{ cf.article }} {{ cf.sum }}</p>
-{% endif %}
+        <h3>Видатки</h3>
+        {% for cf in cash_flows %}
 
-{% endfor %}
-<br>
-{% endif %}
+        {% if current_month == cf.fin_month.month and current_year == cf.fin_month.year and not cf.is_profit %}
+        <p>{{ cf.fin_month|date:"m-Y" }} {{ cf.article }} {{ cf.sum }}</p>
+        {% endif %}
 
-<h2>Фінансові місяці</h2>
-{% for month in months %}
-<p><a href="{% url 'home' month.year month.month %}">{{ month |date:"m-Y" }}</a></p>
-{% endfor %}
+        {% endfor %}
+        <br>
+        {% endif %}
+    </div>
+
+    <div class="col-md-3">
+        <h2>Фінансові місяці</h2>
+        {% for month in months %}
+        <p><a href="{% url 'home' month.year month.month %}">{{ month |date:"m-Y" }}</a></p>
+        {% endfor %}
+    </div>
+</div>
 
 {% else %}
 <h1>Вітаємо в Simple Finance!</h1>

@@ -5,13 +5,14 @@ Simple Finance
 A small program to solve home financial problems
 
 # Technologies
-* python
-* django
-* postgresql
+* python 3
+* django 4.0.5
+//* bootstrap 5.2
+* postgresql 14
 * pytest
 * html
 * css
-* bootstrap
+
 
 # Setup
 To run the project install libraries specified in requirements.txt

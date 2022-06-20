@@ -7,7 +7,7 @@ A small program to solve home financial problems
 # Technologies
 * python 3
 * django 4.0.5
-//* bootstrap 5.2
+* bootstrap 5.2
 * postgresql 14
 * pytest
 * html

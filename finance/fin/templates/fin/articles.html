@@ -8,27 +8,32 @@
 
 {% block content %}
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-reset">Головна</a></li>
-        <li class="breadcrumb-item" aria-current="page">Статті</li>
-    </ol>
-</nav>
+<div class="container-fluid pl-1 bg-secondary text-white">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-reset">Головна</a>
+            </li>
+            <li class="breadcrumb-item" aria-current="page">Статті</li>
+        </ol>
+    </nav>
+</div>
 
-<h2>Статті</h2>
+<div class="container-fluid">
+    <h2>Статті</h2>
 
-<a href="{% url 'add_article' %}">Додати статтю</a>
-{% for art in articles %}
-<p>
-    <a href="{% url 'remove_article' art.pk %}"><img src="{% static 'finance/images/delete.png' %}" width="15"
-                                                     title="Видалити"></a>
-    {% if art.photo %}
-    <img src="{{ art.photo.url }}" width="50">
-    {% else %}
-    <img src="{% static 'finance/images/photo.png' %}" width="50">
-    {% endif %}
-    {{ art.title }}
-</p>
-{% endfor %}
+    <a href="{% url 'add_article' %}">Додати статтю</a>
+    {% for art in articles %}
+    <p>
+        <a href="{% url 'remove_article' art.pk %}"><img src="{% static 'finance/images/delete.png' %}" width="15"
+                                                         title="Видалити"></a>
+        {% if art.photo %}
+        <img src="{{ art.photo.url }}" width="50">
+        {% else %}
+        <img src="{% static 'finance/images/photo.png' %}" width="50">
+        {% endif %}
+        {{ art.title }}
+    </p>
+    {% endfor %}
+</div>
 
 {% endblock %}

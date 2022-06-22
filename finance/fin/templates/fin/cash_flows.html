@@ -8,21 +8,27 @@
 
 {% block content %}
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-reset">Головна</a></li>
-        <li class="breadcrumb-item" aria-current="page">Рух коштів</li>
-    </ol>
-</nav>
+<div class="container-fluid pl-1 bg-secondary text-white">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-reset">Головна</a>
+            </li>
+            <li class="breadcrumb-item" aria-current="page">Рух коштів</li>
+        </ol>
+    </nav>
+</div>
 
-<h2>Рух коштів</h2>
+<div class="container-fluid">
+    <h2>Рух коштів</h2>
 
-<a href="{% url 'add_cash_flow' %}">Додати рух коштів</a>
-{% for cf in cash_flows %}
-<p>
-    <a href="{% url 'remove_cash_flow' cf.pk %}"><img src="{% static 'finance/images/delete.png' %}" width="15" title="Видалити"></a>
-    {{ cf.fin_month|date:"m-Y"  }} {{ cf.article }} {{ cf.sum }}
-</p>
-{% endfor %}
+    <a href="{% url 'add_cash_flow' %}">Додати рух коштів</a>
+    {% for cf in cash_flows %}
+    <p>
+        <a href="{% url 'remove_cash_flow' cf.pk %}"><img src="{% static 'finance/images/delete.png' %}" width="15"
+                                                          title="Видалити"></a>
+        {{ cf.fin_month|date:"m-Y" }} {{ cf.article }} {{ cf.sum }}
+    </p>
+    {% endfor %}
+</div>
 
 {% endblock %}

@@ -8,21 +8,27 @@
 
 {% block content %}
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-reset">Головна</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'articles' %}" class="text-decoration-none text-reset">Статті</a></li>
-        <li class="breadcrumb-item" aria-current="page">Видалення статті</li>
-    </ol>
-</nav>
+<div class="container-fluid pl-1 bg-secondary text-white">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-reset">Головна</a>
+            </li>
+            <li class="breadcrumb-item"><a href="{% url 'articles' %}"
+                                           class="text-decoration-none text-reset">Статті</a></li>
+            <li class="breadcrumb-item" aria-current="page">Видалення статті</li>
+        </ol>
+    </nav>
+</div>
 
-<h2>Видалення статті</h2>
+<div class="container-fluid">
+    <h2>Видалення статті</h2>
 
-<form method="post">
-    {% csrf_token %}
-    <p>Ви впевнені, що хочете видалити статтю "{{ object }}"?</p>
-    {{ form }}
-    <input type="submit" value="Підтвердити">
-</form>
+    <form method="post">
+        {% csrf_token %}
+        <p>Ви впевнені, що хочете видалити статтю "{{ object }}"?</p>
+        {{ form }}
+        <input type="submit" value="Підтвердити">
+    </form>
+</div>
 
 {% endblock %}

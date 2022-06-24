@@ -18,22 +18,50 @@
     </nav>
 </div>
 
+<br>
+
 <div class="container-fluid">
     <h2>Статті</h2>
 
-    <a href="{% url 'add_article' %}">Додати статтю</a>
-    {% for art in articles %}
-    <p>
-        <a href="{% url 'remove_article' art.pk %}"><img src="{% static 'finance/images/delete.png' %}" width="15"
-                                                         title="Видалити"></a>
-        {% if art.photo %}
-        <img src="{{ art.photo.url }}" width="50">
-        {% else %}
-        <img src="{% static 'finance/images/photo.png' %}" width="50">
-        {% endif %}
-        {{ art.title }}
-    </p>
-    {% endfor %}
+    <a href="{% url 'add_article' %}" class="btn btn-outline-secondary btn-md">Додати статтю</a>
+
+    <br>
+    <br>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>Заголовок</th>
+            <th>Мініатюра</th>
+        </tr>
+        </thead>
+        {% for art in articles %}
+        <tr>
+            <th>
+                <a href="{% url 'remove_article' art.pk %}"><img src="{% static 'finance/images/delete.png' %}"
+                                                                 width="20"
+                                                                 title="Видалити"></a>
+            </th>
+            <th>
+                <a href="{% url 'edit_article' art.pk  %}"><img src="{% static 'finance/images/edit.png' %}"
+                                                                 width="25"
+                                                                 title="Змінити"></a>
+            </th>
+            <th>
+                {{ art.title }}
+            </th>
+            <th>
+                {% if art.photo %}
+                <img src="{{ art.photo.url }}" width="75">
+                {% else %}
+                <img src="{% static 'finance/images/photo.png' %}" width="75">
+                {% endif %}
+            </th>
+        </tr>
+        {% endfor %}
+    </table>
 </div>
 
 {% endblock %}

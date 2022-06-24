@@ -1,10 +1,13 @@
+from calendar import monthrange
+from datetime import datetime
+
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DeleteView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django.contrib.auth import login, logout
 
 from .forms import ArticleForm, CashFlowForm
@@ -16,10 +19,6 @@ def index(request, current_year=None, current_month=None):
     if request.user.is_authenticated:
         articles = Article.objects.filter(user_id=request.user.id)
         cash_flows = CashFlow.objects.filter(article__user_id=request.user.id).select_related('article')
-        # distinct('item_name') not working with MySql
-        # months = set()
-        # for cf in cash_flows:
-        #     months.add(cf.fin_month)
         cf_months = CashFlow.objects.filter(article__user_id=request.user.id).distinct('fin_month')
         months = [m.fin_month for m in cf_months]
         str_month = '...'
@@ -33,7 +32,7 @@ def index(request, current_year=None, current_month=None):
             str_month = str(current_month) if len(str(current_month)) == 2 else ("0" + str(current_month))
 
         context = {
-            'articles':  articles,
+            'articles': articles,
             'cash_flows': cash_flows,
             'months': months,
             'current_year': current_year,
@@ -79,6 +78,13 @@ class Articles(ListView):
 
     def get_queryset(self):
         return Article.objects.filter(user_id=self.request.user.id)
+
+
+class EditArticle(UpdateView):
+    model = Article
+    template_name = 'fin/edit_article.html'
+    fields = ['title', 'photo']
+    context_object_name = 'article'
 
 
 class AddArticle(CreateView):
@@ -135,15 +141,35 @@ class CashFlows(ListView):
     context_object_name = 'cash_flows'
 
     def get_queryset(self):
-        return CashFlow.objects.filter(article__user_id=self.request.user.id)
+        date = self.request.GET.get('d')
+        if date is None:
+            return CashFlow.objects.filter(article__user_id=self.request.user.id)
+        else:
+            start_date = datetime.strptime(date + '-01', '%Y-%m-%d')
+            end_date = datetime.strptime(date + '-' + str(monthrange(start_date.year, start_date.month)[1]), '%Y-%m-%d')
+            return CashFlow.objects.filter(article__user_id=self.request.user.id,
+                                           fin_month__range=(start_date, end_date))
+
+    def get_context_data(self, **kwargs):
+        context = super(CashFlows, self).get_context_data(**kwargs)
+        date = self.request.GET.get('d')
+        if date is None:
+            current_date = datetime.now()
+            context['str_year'] = current_date.year
+            month = current_date.month
+            context['str_month'] = str(month) if len(str(month)) == 2 else ("0" + str(month))
+        else:
+            current_date = datetime.strptime(date + '-01', '%Y-%m-%d')
+            context['current_date'] = current_date
+            context['str_year'] = current_date.year
+            month = current_date.month
+            context['str_month'] = str(month) if len(str(month)) == 2 else ("0" + str(month))
+        return context
 
 
 class AddCashFlow(CreateView):
     form_class = CashFlowForm
     template_name = 'fin/add_cash_flow.html'
-
-    def get_queryset(self):
-        return CashFlow.objects.filter(article__user_id=self.request.user.id)
 
     def get_form_kwargs(self):
         kwargs = super(AddCashFlow, self).get_form_kwargs()

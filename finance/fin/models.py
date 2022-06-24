@@ -15,7 +15,7 @@ class Article(models.Model):
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("home")
+        return reverse("articles")
 
     class Meta:
         verbose_name = 'Стаття(ю)'
@@ -34,7 +34,7 @@ class CashFlow(models.Model):
         return str(self.fin_month) + ' ' + str(self.article)
 
     def get_absolute_url(self):
-        return reverse("home")
+        return reverse("cash_flows")
 
     class Meta:
         verbose_name = 'Рух коштів'

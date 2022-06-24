@@ -20,10 +20,12 @@
     </nav>
 </div>
 
+<br>
+
 <div class="container-fluid">
     <h2>Додавання руху коштів</h2>
 
-    <form action="{% url 'add_cash_flow' %}" method="post">
+    <form action="" method="post">
         {% csrf_token %}
 
         {{ form.as_p }}

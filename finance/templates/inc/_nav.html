@@ -3,22 +3,18 @@
         <div class="col-md-10">
             <div class="navbar-header">
                 <a href="{% url 'home' %}" class="navbar-brand"><text class="fs-2">SIMPLE</text> <text class="text-warning fs-2">FINANCE</text></a>
+                <a href="{% url 'articles' %}" class="navbar-brand"><text class="text-white fs-5">Статті</text></a>
+                <a href="{% url 'cash_flows' %}" class="navbar-brand"><text class="text-white fs-5">Рух коштів</text></a>
             </div>
         </div>
 
         <div class="col-md-2 text-light">
             {% if request.user.is_authenticated %}
             Ласкаво просимо, <strong>{{ user.username }}</strong>
-            <button type="button" class="btn btn-outline-light me-2"><a href="{% url 'logout' %}"
-                                                                        class="text-decoration-none text-reset">Вихід</a>
-            </button>
+            <a href="{% url 'logout' %}" class="btn btn-outline-light">Вихід</a>
             {% else %}
-            <button type="button" class="btn btn-outline-light me-2"><a href="{% url 'login' %}"
-                                                                        class="text-decoration-none text-reset">Вхід</a>
-            </button>
-            <button type="button" class="btn btn-outline-light me-2"><a href="{% url 'registration' %}"
-                                                                        class="text-decoration-none text-reset">Реєстрація</a>
-            </button>
+            <a href="{% url 'login' %}" class="btn btn-outline-light">Вхід</a>
+            <a href="{% url 'registration' %}" class="btn btn-outline-light">Реєстрація</a>
             {% endif %}
         </div>
     </div>

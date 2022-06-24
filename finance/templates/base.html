@@ -7,11 +7,14 @@
     <title>{% block title %}Simple Finance{% endblock %}</title>
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 </head>
-<body>
+
+<body class="d-flex flex-column min-vh-100">
 
 {% include 'inc/_nav.html' %}
 
 {% block content %}{% endblock %}
+
+{% include 'inc/_footer.html' %}
 
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 </body>

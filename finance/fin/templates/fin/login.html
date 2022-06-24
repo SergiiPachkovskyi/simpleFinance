@@ -8,14 +8,16 @@
 
 {% block content %}
 
+<br>
+
 <div class="container-fluid">
     <h2>Авторизація</h2>
 
-    <form method="post">
+    <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Авторизація</button>
     </form>
-
-    {% endblock %}
 </div>
+
+{% endblock %}

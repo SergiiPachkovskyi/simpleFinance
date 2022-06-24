@@ -18,17 +18,71 @@
     </nav>
 </div>
 
-<div class="container-fluid">
-    <h2>Рух коштів</h2>
+<br>
 
-    <a href="{% url 'add_cash_flow' %}">Додати рух коштів</a>
-    {% for cf in cash_flows %}
-    <p>
-        <a href="{% url 'remove_cash_flow' cf.pk %}"><img src="{% static 'finance/images/delete.png' %}" width="15"
-                                                          title="Видалити"></a>
-        {{ cf.fin_month|date:"m-Y" }} {{ cf.article }} {{ cf.sum }}
-    </p>
-    {% endfor %}
+<div class="container-fluid">
+    {% if current_date %}
+    <h2>Рух коштів за {{ current_date|date:"m-Y" }}</h2>
+    {% else %}
+    <h2>Рух коштів</h2>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-8">
+            <a href="{% url 'add_cash_flow' %}" class="btn btn-outline-secondary btn-md">Додати рух коштів</a>
+        </div>
+        <div class="col-md-4">
+            <form action="{% url 'cash_flows' %}" method="get">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <label for="current_date" class="input-group-text">Відбір</label>
+                                <input type="month" id="current_date" class="form-control" min="2000-01" max="2100-12"
+                                       value="{{ str_year }}-{{ str_month }}" name="d">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <input type="submit" value="Встановити" class="btn btn-outline-secondary btn-md">
+                                <a href="{% url 'cash_flows' %}" class="btn btn-outline-secondary btn-md">Прибрати</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>Місяць</th>
+            <th>Стаття</th>
+            <th>Сума</th>
+        </tr>
+        </thead>
+        {% for cf in cash_flows %}
+        <tr>
+            <th>
+                <a href="{% url 'remove_cash_flow' cf.pk %}">
+                    <img src="{% static 'finance/images/delete.png' %}" width="15" title="Видалити">
+                </a>
+            </th>
+            {% if cf.is_profit %}
+            <th><img src="{% static 'finance/images/plus.png' %}" width="15" title="Прибуток"></th>
+            {% else %}
+            <th><img src="{% static 'finance/images/minus.png' %}" width="15" title="Видаток"></th>
+            {% endif %}
+            <th>{{ cf.fin_month|date:"d-m-Y" }}</th>
+            <th>{{ cf.article }}</th>
+            <th>{{ cf.sum }}</th>
+        </tr>
+        {% endfor %}
+
+    </table>
 </div>
 
 {% endblock %}

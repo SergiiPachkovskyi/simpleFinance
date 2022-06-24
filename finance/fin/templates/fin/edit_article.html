@@ -15,7 +15,7 @@
             </li>
             <li class="breadcrumb-item"><a href="{% url 'articles' %}"
                                            class="text-decoration-none text-reset">Статті</a></li>
-            <li class="breadcrumb-item" aria-current="page">Додавання статті</li>
+            <li class="breadcrumb-item" aria-current="page">Редагування статті</li>
         </ol>
     </nav>
 </div>
@@ -23,7 +23,7 @@
 <br>
 
 <div class="container-fluid">
-    <h2>Додавання статті</h2>
+    <h2>Редагування статті</h2>
 
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -32,7 +32,7 @@
 
         <input type="hidden" id="user_pk" value={{request.user.pk}}>
 
-        <button type="submit">Додати</button>
+        <button type="submit">Зберегти</button>
     </form>
 </div>
 

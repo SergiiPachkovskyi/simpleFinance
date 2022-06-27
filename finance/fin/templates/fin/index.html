@@ -12,7 +12,6 @@
 
 {% if request.user.is_authenticated %}
 
-
 <div class="container-fluid bg-secondary text-white">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -26,63 +25,97 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
-            <h2>Статті</h2>
-            {% for art in articles %}
-            <p>
-                {% if art.photo %}
-                <img src="{{ art.photo.url }}" width="50">
-                {% else %}
-                <img src="{% static 'finance/images/photo.png' %}" width="50">
-                {% endif %}
-                {{ art.title }}
-            </p>
-            {% endfor %}
-            <br>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Статті</h2>
+                </div>
+
+                <ul class="list-group list-group-flush">
+                    {% for art in articles %}
+                        <li class="list-group-item">
+                        {% if art.photo %}
+                            <img src="{{ art.photo.url }}" width="50">
+                        {% else %}
+                            <img src="{% static 'finance/images/photo.png' %}" width="50">
+                        {% endif %}
+                        {{ art.title }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
 
         <div class="col-md-6">
-            <h2>Рух коштів
-            {% if current_year %}
-            за {{ str_month }}-{{ current_year }}
-            </h2>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Рух коштів
+                        {% if current_year %}
+                        за {{ str_month }}-{{ current_year }}
+                        {% endif %}
+                    </h2>
+                </div>
 
-            <h3>Прибутки</h3>
-            {% for cf in cash_flows %}
+                <div class="card-body">
+                    <div class="card">
+                        <div class="card-header bg-success">
+                            <span class="fs-5">Прибутки</span>
+                        </div>
+                        <div class="card-body">
+                            {% for cf in cash_flows %}
 
-            {% if current_month == cf.fin_month.month and current_year == cf.fin_month.year and cf.is_profit %}
-            <p>{{ cf.fin_month|date:"m-Y" }} {{ cf.article }} {{ cf.sum }}</p>
-            {% endif %}
+                            {% if current_month == cf.fin_month.month and current_year == cf.fin_month.year and cf.is_profit %}
+                            <p>{{ cf.fin_month|date:"d-m-Y" }} {{ cf.article }} {{ cf.sum }}</p>
+                            {% endif %}
 
-            {% endfor %}
+                            {% endfor %}
+                        </div>
 
-            <h3>Видатки</h3>
-            {% for cf in cash_flows %}
 
-            {% if current_month == cf.fin_month.month and current_year == cf.fin_month.year and not cf.is_profit %}
-            <p>{{ cf.fin_month|date:"m-Y" }} {{ cf.article }} {{ cf.sum }}</p>
-            {% endif %}
+                        <div class="card-header bg-warning">
+                            <span class="fs-5">Видатки</span>
+                        </div>
+                        <div class="card-body">
+                            {% for cf in cash_flows %}
 
-            {% endfor %}
-            <br>
-            {% endif %}
+                            {% if current_month == cf.fin_month.month and current_year == cf.fin_month.year and not cf.is_profit %}
+                            <p>{{ cf.fin_month|date:"d-m-Y" }} {{ cf.article }} {{ cf.sum }}</p>
+                            {% endif %}
+
+                            {% endfor %}
+                        </div>
+
+                        <br>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-3">
-            <h2>Фінансові місяці</h2>
-            {% for month in months %}
-            <p><a href="{% url 'home' month.year month.month %}">{{ month |date:"m-Y" }}</a></p>
-            {% endfor %}
+            <div class="card">
+                <div class="card-header">
+                    <h2>Фінансові місяці</h2>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for month in months %}
+                    <li class="list-group-item">
+                        <a href="{% url 'home' month.year month.month %}">{{ month |date:"m-Y" }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
-</div>
 
-{% else %}
-<br>
+    {% else %}
+    <br>
 
-<div class="container-fluid">
-    <h1>Вітаємо в Simple Finance!</h1>
-    <h3>Увійдіть або зареєструйтесь для ведення своїх фінансів</h3>
+    <div class="container-fluid">
+        <h1>Вітаємо в Simple Finance!</h1>
+        <h3>Увійдіть або зареєструйтесь для ведення своїх фінансів</h3>
+    </div>
+    {% endif %}
+
 </div>
-{% endif %}
 
 {% endblock %}

@@ -3,8 +3,10 @@
         <div class="col-md-10">
             <div class="navbar-header">
                 <a href="{% url 'home' %}" class="navbar-brand"><text class="fs-2">SIMPLE</text> <text class="text-warning fs-2">FINANCE</text></a>
+                {% if request.user.is_authenticated %}
                 <a href="{% url 'articles' %}" class="navbar-brand"><text class="text-white fs-5">Статті</text></a>
                 <a href="{% url 'cash_flows' %}" class="navbar-brand"><text class="text-white fs-5">Рух коштів</text></a>
+                {% endif %}
             </div>
         </div>
 

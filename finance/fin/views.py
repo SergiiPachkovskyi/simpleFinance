@@ -17,24 +17,32 @@ from .models import Article, CashFlow
 def index(request, current_year=None, current_month=None):
     context = dict()
     if request.user.is_authenticated:
-        articles = Article.objects.filter(user_id=request.user.id)
-        cash_flows = CashFlow.objects.filter(article__user_id=request.user.id).select_related('article')
         cf_months = CashFlow.objects.filter(article__user_id=request.user.id).distinct('fin_month')
-        months = [m.fin_month for m in cf_months]
-        str_month = '...'
-        if current_month is None:
+        years = [m.fin_month.year for m in cf_months]
+        years = sorted(set(years), reverse=True)
+        months = [m.fin_month.replace(day=1) for m in cf_months]
+        months = sorted(set(months), reverse=True)
+
+        if current_month is None and current_year is None:
             if len(months) != 0:
                 current_year = months[0].year
                 month = months[0].month
                 current_month = month
-                str_month = str(month) if len(str(month)) == 2 else ("0" + str(month))
-        else:
-            str_month = str(current_month) if len(str(current_month)) == 2 else ("0" + str(current_month))
+            else:
+                current_year = datetime.now().year
+                current_month = datetime.now().month
+
+        str_month = str(current_month) if len(str(current_month)) == 2 else ("0" + str(current_month))
+        start_date = datetime.strptime(str(current_year) + '-' + str_month + '-01', '%Y-%m-%d')
+        end_date = datetime.strptime(str(current_year) + '-' + str_month + '-'
+                                     + str(monthrange(start_date.year, start_date.month)[1]), '%Y-%m-%d')
+        cash_flows = CashFlow.objects.filter(article__user_id=request.user.id,
+                                             fin_month__range=(start_date, end_date)).select_related('article')
 
         context = {
-            'articles': articles,
             'cash_flows': cash_flows,
             'months': months,
+            'years': years,
             'current_year': current_year,
             'current_month': current_month,
             'str_month': str_month,

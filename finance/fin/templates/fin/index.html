@@ -24,28 +24,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-header">
-                    <h2>Статті</h2>
-                </div>
-
-                <ul class="list-group list-group-flush">
-                    {% for art in articles %}
-                        <li class="list-group-item">
-                        {% if art.photo %}
-                            <img src="{{ art.photo.url }}" width="50">
-                        {% else %}
-                            <img src="{% static 'finance/images/photo.png' %}" width="50">
-                        {% endif %}
-                        {{ art.title }}
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-
-        <div class="col-md-6">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
                     <h2>Рух коштів
@@ -57,52 +36,114 @@
 
                 <div class="card-body">
                     <div class="card">
-                        <div class="card-header bg-success">
+                        <div class="card-header bg-success" data-bs-toggle="collapse" data-bs-target="#collapsePlus">
                             <span class="fs-5">Прибутки</span>
                         </div>
-                        <div class="card-body">
-                            {% for cf in cash_flows %}
-
-                            {% if current_month == cf.fin_month.month and current_year == cf.fin_month.year and cf.is_profit %}
-                            <p>{{ cf.fin_month|date:"d-m-Y" }} {{ cf.article }} {{ cf.sum }}</p>
-                            {% endif %}
-
-                            {% endfor %}
+                        <div class="collapse show" id="collapsePlus">
+                            <div class="card-body">
+                                {% for cf in cash_flows %}
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        {% if cf.is_profit %}
+                                        <div class="col-md-2">
+                                            {% if cf.article.photo %}
+                                            <img src="{{ cf.article.photo.url }}" width="50">
+                                            {% else %}
+                                            <img src="{% static 'finance/images/article.png' %}" width="50">
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{ cf.article }}
+                                        </div>
+                                        <div class="col-md-2 fw-bold">
+                                            {{ cf.sum }}
+                                        </div>
+                                        <div class="col-md-2">
+                                            {{ cf.fin_month|date:"d-m-Y" }}
+                                        </div>
+                                        <hr>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
                         </div>
-
-
-                        <div class="card-header bg-warning">
+                    </div>
+                    <br>
+                    <div class="card">
+                        <div class="card-header bg-warning" data-bs-toggle="collapse" data-bs-target="#collapseMinus">
                             <span class="fs-5">Видатки</span>
                         </div>
-                        <div class="card-body">
-                            {% for cf in cash_flows %}
-
-                            {% if current_month == cf.fin_month.month and current_year == cf.fin_month.year and not cf.is_profit %}
-                            <p>{{ cf.fin_month|date:"d-m-Y" }} {{ cf.article }} {{ cf.sum }}</p>
-                            {% endif %}
-
-                            {% endfor %}
+                        <div class="collapse show" id="collapseMinus">
+                            <div class="card-body">
+                                {% for cf in cash_flows %}
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        {% if not cf.is_profit %}
+                                        <div class="col-md-2">
+                                            {% if cf.article.photo %}
+                                            <img src="{{ cf.article.photo.url }}" width="50">
+                                            {% else %}
+                                            <img src="{% static 'finance/images/article.png' %}" width="50">
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{ cf.article }}
+                                        </div>
+                                        <div class="col-md-2 fw-bold">
+                                            {{ cf.sum }}
+                                        </div>
+                                        <div class="col-md-2">
+                                            {{ cf.fin_month|date:"d-m-Y" }}
+                                        </div>
+                                        <hr>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
                         </div>
-
-                        <br>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card">
                 <div class="card-header">
                     <h2>Фінансові місяці</h2>
                 </div>
-                <ul class="list-group list-group-flush">
-                    {% for month in months %}
-                    <li class="list-group-item">
-                        <a href="{% url 'home' month.year month.month %}">{{ month |date:"m-Y" }}
-                        </a>
-                    </li>
+
+                <div class="card-body">
+                    {% for year in years %}
+                    <div class="card">
+                        <div class="card-header" data-bs-toggle="collapse" data-bs-target="#collapse{{ year }}">
+                            {{ year }}
+                        </div>
+
+                        <div class="collapse {% if current_year == year %} show {% endif %}" id="collapse{{ year }}">
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    {% for month in months %}
+                                    {% if month.year == year %}
+                                    <li class="list-group-item">
+                                        {% if current_year == month.year and current_month == month.month %}
+                                            <strong class="text-secondary">{{ month |date:"M" }}</strong>
+                                        {% else %}
+                                            <a href="{% url 'home' month.year month.month %}" class="text-decoration-none">
+                                                {{ month |date:"M" }}
+                                            </a>
+                                        {% endif %}
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
                     {% endfor %}
-                </ul>
+                </div>
             </div>
         </div>
     </div>

@@ -37,7 +37,8 @@ def index(request, current_year=None, current_month=None):
         end_date = datetime.strptime(str(current_year) + '-' + str_month + '-'
                                      + str(monthrange(start_date.year, start_date.month)[1]), '%Y-%m-%d')
         cash_flows = CashFlow.objects.filter(article__user_id=request.user.id,
-                                             fin_month__range=(start_date, end_date)).select_related('article')
+                                             fin_month__range=(start_date, end_date)).\
+            order_by('fin_month').select_related('article')
 
         context = {
             'cash_flows': cash_flows,

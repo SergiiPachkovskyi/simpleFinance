@@ -1,6 +1,10 @@
+import collections
+import json
 from calendar import monthrange
-from datetime import datetime
+from datetime import datetime, date
+from decimal import Decimal
 
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
@@ -17,6 +21,7 @@ from .models import Article, CashFlow
 def index(request, current_year=None, current_month=None):
     context = dict()
     if request.user.is_authenticated:
+        articles = Article.objects.filter(user_id=request.user.id)
         cf_months = CashFlow.objects.filter(article__user_id=request.user.id).distinct('fin_month')
         years = [m.fin_month.year for m in cf_months]
         years = sorted(set(years), reverse=True)
@@ -37,10 +42,11 @@ def index(request, current_year=None, current_month=None):
         end_date = datetime.strptime(str(current_year) + '-' + str_month + '-'
                                      + str(monthrange(start_date.year, start_date.month)[1]), '%Y-%m-%d')
         cash_flows = CashFlow.objects.filter(article__user_id=request.user.id,
-                                             fin_month__range=(start_date, end_date)).\
+                                             fin_month__range=(start_date, end_date)). \
             order_by('fin_month').select_related('article')
 
         context = {
+            'articles': articles,
             'cash_flows': cash_flows,
             'months': months,
             'years': years,
@@ -222,3 +228,58 @@ class RemoveCashFlow(DeleteView):
 
 def cash_flow_delete_error(request):
     return render(request, template_name='fin/article_delete_error.html')
+
+
+def article_graph(request, art_pk):
+    context = dict()
+    if request.user.is_authenticated:
+        article = Article.objects.get(pk=art_pk)
+
+        cash_flows = CashFlow.objects.filter(article=article).distinct('fin_month').order_by('fin_month')
+
+        months = dict()
+        min_month = None
+        max_month = None
+        for cf in cash_flows:
+            month = cf.fin_month.replace(day=1)
+            if min_month is None:
+                min_month = cf.fin_month
+            max_month = month
+            sum = cf.sum if cf.is_profit else -cf.sum
+            months[month] = months[month] + sum if month in months else sum
+
+        current_month = min_month + relativedelta(months=1)
+        while current_month < max_month:
+            if current_month in months:
+                pass
+            else:
+                months[current_month] = 0
+            current_month = current_month + relativedelta(months=1)
+
+        months = collections.OrderedDict(sorted(months.items()))
+        month_list = list(months.keys())
+        sum_list = list(months.values())
+
+        charts_data = dict()
+        charts_data["article"] = article.title
+        charts_data["charts_articles"] = dict()
+        charts_data["charts_articles"]["month_list"] = month_list
+        charts_data["charts_articles"]["sum_list"] = [
+            {"name": article.title, "data": sum_list},
+        ]
+
+        def custom_serializer(obj):
+            if isinstance(obj, date):
+                serial = obj.isoformat()
+                return serial
+            elif isinstance(obj, Decimal):
+                return float(obj)
+
+        charts_data = json.dumps(charts_data, default=custom_serializer)
+
+        context = {
+            'article': article,
+            'charts_data': charts_data,
+        }
+
+    return render(request, template_name='fin/article_graph.html', context=context)

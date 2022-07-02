@@ -24,7 +24,32 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Статті</h2>
+                </div>
+
+                <ul class="list-group list-group-flush">
+                    {% for art in articles %}
+                        <li class="list-group-item">
+                        {% if art.photo %}
+                            <a class="text-decoration-none" href="{% url 'article_graph' art.pk%}">
+                                <img src="{{ art.photo.url }}" width="50">
+                            </a>
+                        {% else %}
+                            <a class="text-decoration-none" href="{% url 'article_graph' art.pk%}">
+                                <img src="{% static 'finance/images/article.png' %}" width="50">
+                            </a>
+                        {% endif %}
+                            <a class="text-decoration-none" href="{% url 'article_graph' art.pk%}">{{ art.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
                     <h2>Рух коштів

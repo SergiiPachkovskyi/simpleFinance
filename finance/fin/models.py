@@ -4,6 +4,23 @@ from django.urls import reverse
 
 
 class Article(models.Model):
+    """
+    A class to represent a article.
+
+    Attributes
+    ----------
+    title : str
+        title of the article
+    user : User
+        owner of the article
+    photo : str
+        icon of the article
+
+    Methods
+    -------
+    ...
+    """
+
     title = models.CharField(max_length=100, verbose_name='Заголовок')
     user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='Користувач')
     photo = models.ImageField(upload_to='photos/%Y/%m/%d', verbose_name='Зображення', blank=True)
@@ -14,7 +31,8 @@ class Article(models.Model):
     def save(self, *args, **kwargs):
         return super().save(*args, **kwargs)
 
-    def get_absolute_url(self):
+    @staticmethod
+    def get_absolute_url():
         return reverse("articles")
 
     class Meta:
@@ -24,6 +42,26 @@ class Article(models.Model):
 
 
 class CashFlow(models.Model):
+    """
+    A class to represent a cash flows.
+
+    Attributes
+    ----------
+    fin_month : date
+        date of the cash flow
+    article : Article
+        article of the cash flow
+    is_profit : bool
+        is the cash flow a profit
+    sum : float
+        sum of the cash flow
+    comment : float
+        comment to the cash flow
+
+    Methods
+    -------
+    ...
+    """
     fin_month = models.DateField(verbose_name='Місяць')
     article = models.ForeignKey(Article, on_delete=models.PROTECT, verbose_name='Стаття')
     is_profit = models.BooleanField(default=False, verbose_name='Прибуток')
@@ -33,7 +71,8 @@ class CashFlow(models.Model):
     def __str__(self):
         return str(self.fin_month) + ' ' + str(self.article)
 
-    def get_absolute_url(self):
+    @staticmethod
+    def get_absolute_url():
         return reverse("cash_flows")
 
     class Meta:

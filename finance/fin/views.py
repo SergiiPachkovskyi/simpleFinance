@@ -230,56 +230,57 @@ def cash_flow_delete_error(request):
     return render(request, template_name='fin/article_delete_error.html')
 
 
-def article_graph(request, art_pk):
+def article_graph(request, pk):
     context = dict()
     if request.user.is_authenticated:
-        article = Article.objects.get(pk=art_pk)
+        article = Article.objects.get(pk=pk)
 
         cash_flows = CashFlow.objects.filter(article=article).distinct('fin_month').order_by('fin_month')
 
-        months = dict()
-        min_month = None
-        max_month = None
-        for cf in cash_flows:
-            month = cf.fin_month.replace(day=1)
-            if min_month is None:
-                min_month = cf.fin_month
-            max_month = month
-            sum = cf.sum if cf.is_profit else -cf.sum
-            months[month] = months[month] + sum if month in months else sum
-
-        current_month = min_month + relativedelta(months=1)
-        while current_month < max_month:
-            if current_month in months:
-                pass
-            else:
-                months[current_month] = 0
-            current_month = current_month + relativedelta(months=1)
-
-        months = collections.OrderedDict(sorted(months.items()))
-        month_list = list(months.keys())
-        sum_list = list(months.values())
-
-        charts_data = dict()
-        charts_data["article"] = article.title
-        charts_data["charts_articles"] = dict()
-        charts_data["charts_articles"]["month_list"] = month_list
-        charts_data["charts_articles"]["sum_list"] = [
-            {"name": article.title, "data": sum_list},
-        ]
-
-        def custom_serializer(obj):
-            if isinstance(obj, date):
-                serial = obj.isoformat()
-                return serial
-            elif isinstance(obj, Decimal):
-                return float(obj)
-
-        charts_data = json.dumps(charts_data, default=custom_serializer)
-
         context = {
             'article': article,
-            'charts_data': charts_data,
         }
+
+        if len(cash_flows) != 0:
+            months = dict()
+            min_month = None
+            max_month = None
+            for cf in cash_flows:
+                month = cf.fin_month.replace(day=1)
+                if min_month is None:
+                    min_month = cf.fin_month
+                max_month = month
+                sum = cf.sum if cf.is_profit else -cf.sum
+                months[month] = months[month] + sum if month in months else sum
+
+            current_month = min_month + relativedelta(months=1)
+            while current_month < max_month:
+                if current_month in months:
+                    pass
+                else:
+                    months[current_month] = 0
+                current_month = current_month + relativedelta(months=1)
+
+            months = collections.OrderedDict(sorted(months.items()))
+            month_list = list(months.keys())
+            sum_list = list(months.values())
+
+            charts_data = dict()
+            charts_data["article"] = article.title
+            charts_data["charts_articles"] = dict()
+            charts_data["charts_articles"]["month_list"] = month_list
+            charts_data["charts_articles"]["sum_list"] = [
+                {"name": article.title, "data": sum_list},
+            ]
+
+            def custom_serializer(obj):
+                if isinstance(obj, date):
+                    serial = obj.isoformat()
+                    return serial
+                elif isinstance(obj, Decimal):
+                    return float(obj)
+
+            charts_data = json.dumps(charts_data, default=custom_serializer)
+            context['charts_data'] = charts_data
 
     return render(request, template_name='fin/article_graph.html', context=context)

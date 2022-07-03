@@ -6,11 +6,13 @@ from fin.models import Article, CashFlow
 
 
 class UserLoginForm(AuthenticationForm):
+    """A class to represent a Login form."""
     username = forms.CharField(label="Ім'я користувача", widget=forms.TextInput(attrs={'class': "form-control"}))
     password = forms.CharField(label="Пароль", widget=forms.PasswordInput(attrs={"class": "form-control"}))
 
 
 class UserRegisterForm(UserCreationForm):
+    """A class to represent a Register form."""
     username = forms.CharField(label="Ім'я користувача", widget=forms.TextInput(attrs={'class': "form-control"}))
     password1 = forms.CharField(label="Пароль", widget=forms.PasswordInput(attrs={"class": "form-control"}))
     password2 = forms.CharField(label="Підтвердження пароля",

@@ -6,19 +6,15 @@
 {{block.super}} : Додавання статті
 {% endblock %}
 
-{% block content %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-reset">Головна</a>
+    </li>
+    <li class="breadcrumb-item"><a href="{% url 'articles' %}"
+                                   class="text-decoration-none text-reset">Статті</a></li>
+    <li class="breadcrumb-item" aria-current="page">Редагування статті</li>
+{% endblock %}
 
-<div class="container-fluid pl-1 bg-secondary text-white">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-reset">Головна</a>
-            </li>
-            <li class="breadcrumb-item"><a href="{% url 'articles' %}"
-                                           class="text-decoration-none text-reset">Статті</a></li>
-            <li class="breadcrumb-item" aria-current="page">Редагування статті</li>
-        </ol>
-    </nav>
-</div>
+{% block content %}
 
 <br>
 

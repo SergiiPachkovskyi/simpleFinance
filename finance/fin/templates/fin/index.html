@@ -8,17 +8,11 @@
 
 {% include 'inc/_nav.html' %}
 
+{% block breadcrumb %}{{block.super}}{% endblock %}
+
 {% block content %}
 
 {% if request.user.is_authenticated %}
-
-<div class="container-fluid bg-secondary text-white">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item" aria-current="page">&nbsp;</li>
-        </ol>
-    </nav>
-</div>
 
 <br>
 

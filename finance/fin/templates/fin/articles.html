@@ -6,17 +6,14 @@
 {{block.super}} : Статті
 {% endblock %}
 
-{% block content %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'home' %}" class="text-decoration-none text-reset">Головна</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">Статті</li>
+{% endblock %}
 
-<div class="container-fluid pl-1 bg-secondary text-white">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-reset">Головна</a>
-            </li>
-            <li class="breadcrumb-item" aria-current="page">Статті</li>
-        </ol>
-    </nav>
-</div>
+{% block content %}
 
 <br>
 

@@ -6,7 +6,8 @@ from decimal import Decimal
 from typing import Optional
 
 from dateutil.relativedelta import relativedelta
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.http import HttpResponseRedirect
@@ -15,7 +16,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django.contrib.auth import login, logout
 
-from .forms import ArticleForm, CashFlowForm
+from .forms import ArticleForm, CashFlowForm, UserLoginForm, UserRegisterForm
 from .models import Article, CashFlow
 
 
@@ -73,13 +74,16 @@ def user_registration(request):
     :return: render fin/registration.html
     """
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
+            messages.success(request, 'Вдала реєстрація')
             return redirect('home')
+        else:
+            messages.error(request, 'Помилка реєстрації')
     else:
-        form = UserCreationForm()
+        form = UserRegisterForm()
     return render(request, 'fin/registration.html', {"form": form})
 
 
@@ -90,13 +94,15 @@ def user_login(request):
     :return: render fin/login.html
     """
     if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
+        form = UserLoginForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
             return redirect('home')
+        else:
+            messages.error(request, 'Помилка авторизації')
     else:
-        form = AuthenticationForm()
+        form = UserLoginForm()
     return render(request, 'fin/login.html', {"form": form})
 
 

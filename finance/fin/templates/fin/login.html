@@ -6,18 +6,24 @@
 {{block.super}} : Авторизація
 {% endblock %}
 
+{% block breadcrumb %}{{block.super}}{% endblock %}
+
 {% block content %}
 
 <br>
 
 <div class="container-fluid">
-    <h2>Авторизація</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Авторизація</h2>
 
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Авторизація</button>
-    </form>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-outline-secondary btn-md" type="submit">Авторизація</button>
+            </form>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

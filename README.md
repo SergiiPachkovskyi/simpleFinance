@@ -2,7 +2,7 @@
 Simple Finance
 
 # General info
-A small web-program to solve some financial issues
+Web program for managing income and expenses in the section of articles. Provides a convenient review of monthly finances and the formation of a schedule for the use of a specific article.
 
 # Technologies
 * python 3

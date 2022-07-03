@@ -4,6 +4,8 @@ from fin.models import Article, CashFlow
 
 
 class ArticleForm(forms.ModelForm):
+    """A class to represent an Articles form."""
+
     def __init__(self, *args, **kwargs):
         self.current_user = kwargs.pop('user', None)
         super(ArticleForm, self).__init__(*args, **kwargs)
@@ -22,6 +24,7 @@ class ArticleForm(forms.ModelForm):
 
 
 class CashFlowForm(forms.ModelForm):
+    """A class to represent a CashFlows form."""
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(CashFlowForm, self).__init__(*args, **kwargs)

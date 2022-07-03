@@ -3,6 +3,7 @@ import json
 from calendar import monthrange
 from datetime import datetime, date
 from decimal import Decimal
+from typing import Optional
 
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -18,8 +19,16 @@ from .forms import ArticleForm, CashFlowForm
 from .models import Article, CashFlow
 
 
-def index(request, current_year=None, current_month=None):
+def index(request, current_year: Optional[int] = None, current_month: Optional[int] = None):
+    """
+    Function for render index.html
+    :param request: WSGIRequest
+    :param current_year: int | None
+    :param current_month: int | None
+    :return: render fin/index.html
+    """
     context = dict()
+    print(type(request))
     if request.user.is_authenticated:
         articles = Article.objects.filter(user_id=request.user.id)
         cf_months = CashFlow.objects.filter(article__user_id=request.user.id).distinct('fin_month')
@@ -58,6 +67,11 @@ def index(request, current_year=None, current_month=None):
 
 
 def user_registration(request):
+    """
+    Function for render registration.html
+    :param request: WSGIRequest
+    :return: render fin/registration.html
+    """
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -70,6 +84,11 @@ def user_registration(request):
 
 
 def user_login(request):
+    """
+    Function for render login.html
+    :param request: WSGIRequest
+    :return: render fin/login.html
+    """
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
@@ -82,11 +101,22 @@ def user_login(request):
 
 
 def user_logout(request):
+    """
+    Function for render login.html
+    :param request: WSGIRequest
+    :return: redirect('home')
+    """
     logout(request)
     return redirect('home')
 
 
 class Articles(ListView):
+    """
+    Display a list of Articles.
+    :model:`Article`
+    :context_object_name:`articles`
+    :template_name:`fin/articles.html`
+    """
     model = Article
     template_name = 'fin/articles.html'
     context_object_name = 'articles'
@@ -96,6 +126,13 @@ class Articles(ListView):
 
 
 class EditArticle(UpdateView):
+    """
+    Display an Article edit page.
+    :model:`Article`
+    :context_object_name:`article`
+    :fields: 'title', 'photo'
+    :template_name:`fin/edit_article.html`
+    """
     model = Article
     template_name = 'fin/edit_article.html'
     fields = ['title', 'photo']
@@ -103,6 +140,11 @@ class EditArticle(UpdateView):
 
 
 class AddArticle(CreateView):
+    """
+    Display an ArticleForm
+    :form_class:`ArticleForm`
+    :template_name:`fin/edit_article.html`
+    """
     form_class = ArticleForm
     template_name = 'fin/add_article.html'
 
@@ -113,6 +155,12 @@ class AddArticle(CreateView):
 
 
 class RemoveArticle(DeleteView):
+    """
+    Display an Article remove page.
+    :model:`Article`
+    :success_url:`articles`
+    :error_url: `article_delete_error`
+    """
     model = Article
     success_url = reverse_lazy('articles')
     error_url = reverse_lazy('article_delete_error')
@@ -147,10 +195,21 @@ class RemoveArticle(DeleteView):
 
 
 def article_delete_error(request):
+    """
+    Function for render article_delete_error.html
+    :param request: WSGIRequest
+    :return: render fin/article_delete_error.html
+    """
     return render(request, template_name='fin/article_delete_error.html')
 
 
 class CashFlows(ListView):
+    """
+    Display a list of CashFlows.
+    :model:`Article`
+    :context_object_name:`cash_flows`
+    :template_name:`fin/cash_flows.html`
+    """
     model = CashFlow
     template_name = 'fin/cash_flows.html'
     context_object_name = 'cash_flows'
@@ -183,6 +242,11 @@ class CashFlows(ListView):
 
 
 class AddCashFlow(CreateView):
+    """
+    Display an CashFlowForm
+    :form_class:`CashFlowForm`
+    :template_name:`fin/add_cash_flow.html`
+    """
     form_class = CashFlowForm
     template_name = 'fin/add_cash_flow.html'
 
@@ -193,6 +257,12 @@ class AddCashFlow(CreateView):
 
 
 class RemoveCashFlow(DeleteView):
+    """
+    Display an CashFlow remove page.
+    :model:`CashFlow`
+    :success_url:`cash_flows`
+    :error_url: `cash_flow_delete_error`
+    """
     model = CashFlow
     success_url = reverse_lazy('cash_flows')
     error_url = reverse_lazy('cash_flow_delete_error')
@@ -227,10 +297,21 @@ class RemoveCashFlow(DeleteView):
 
 
 def cash_flow_delete_error(request):
+    """
+    Function for render article_delete_error.html
+    :param request: WSGIRequest
+    :return: render fin/article_delete_error.html
+    """
     return render(request, template_name='fin/article_delete_error.html')
 
 
-def article_graph(request, pk):
+def article_graph(request, pk: int):
+    """
+    Function for render article_graph.html
+    :param request: WSGIRequest
+    :param pk: int
+    :return: render fin/article_graph.html
+    """
     context = dict()
     if request.user.is_authenticated:
         article = Article.objects.get(pk=pk)

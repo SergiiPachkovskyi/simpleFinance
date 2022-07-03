@@ -5,15 +5,15 @@ from django.urls import reverse
 
 class Article(models.Model):
     """
-    A class to represent a article.
+    A class to represent an article.
 
     Attributes
     ----------
-    title : str
+    title: str
         title of the article
-    user : User
+    user: User
         owner of the article
-    photo : str
+    photo: str
         icon of the article
 
     Methods
@@ -47,15 +47,15 @@ class CashFlow(models.Model):
 
     Attributes
     ----------
-    fin_month : date
+    fin_month: date
         date of the cash flow
-    article : Article
+    article: Article
         article of the cash flow
-    is_profit : bool
+    is_profit: bool
         is the cash flow a profit
-    sum : float
+    sum: float
         sum of the cash flow
-    comment : float
+    comment: float
         comment to the cash flow
 
     Methods

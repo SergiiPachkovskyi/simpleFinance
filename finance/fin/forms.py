@@ -27,7 +27,8 @@ class UserRegisterForm(UserCreationForm):
 class ArticleForm(forms.ModelForm):
     """A class to represent an Articles form."""
     title = forms.CharField(label="Заголовок", widget=forms.TextInput(attrs={'class': "form-control"}))
-    photo = forms.ImageField(label="Зображення", widget=forms.FileInput(attrs={'class': "form-control"}))
+    photo = forms.ImageField(label="Зображення", required=False,
+                             widget=forms.FileInput(attrs={'class': "form-control"}))
 
     def __init__(self, *args, **kwargs):
         self.current_user = kwargs.pop('user', None)
@@ -49,6 +50,8 @@ class ArticleForm(forms.ModelForm):
 class CashFlowForm(forms.ModelForm):
     """A class to represent a CashFlows form."""
     fin_month = forms.DateField(label="Дата", widget=forms.DateInput(attrs={'class': "form-control"}))
+    is_profit = forms.BooleanField(label="Прибуток", required=False,
+                                   widget=forms.CheckboxInput(attrs={'class': "form-check-input"}))
     sum = forms.FloatField(label="Сума", widget=forms.NumberInput(attrs={'class': "form-control"}))
     article = forms.ModelChoiceField(label="Стаття", empty_label='Оберіть статтю...', queryset=None,
                                      widget=forms.Select(attrs={"class": "form-control"}))

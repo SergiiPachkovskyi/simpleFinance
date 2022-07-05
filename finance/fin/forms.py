@@ -26,6 +26,8 @@ class UserRegisterForm(UserCreationForm):
 
 class ArticleForm(forms.ModelForm):
     """A class to represent an Articles form."""
+    title = forms.CharField(label="Заголовок", widget=forms.TextInput(attrs={'class': "form-control"}))
+    photo = forms.ImageField(label="Зображення", widget=forms.FileInput(attrs={'class': "form-control"}))
 
     def __init__(self, *args, **kwargs):
         self.current_user = kwargs.pop('user', None)
@@ -46,6 +48,11 @@ class ArticleForm(forms.ModelForm):
 
 class CashFlowForm(forms.ModelForm):
     """A class to represent a CashFlows form."""
+    fin_month = forms.DateField(label="Дата", widget=forms.DateInput(attrs={'class': "form-control"}))
+    sum = forms.FloatField(label="Сума", widget=forms.NumberInput(attrs={'class': "form-control"}))
+    article = forms.ModelChoiceField(label="Стаття", empty_label='Оберіть статтю...', queryset=None,
+                                     widget=forms.Select(attrs={"class": "form-control"}))
+
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(CashFlowForm, self).__init__(*args, **kwargs)
@@ -54,4 +61,3 @@ class CashFlowForm(forms.ModelForm):
     class Meta:
         model = CashFlow
         fields = ['fin_month', 'article', 'is_profit', 'sum']
-

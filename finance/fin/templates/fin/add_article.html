@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-reset">Головна</a>
-    </li>
-    <li class="breadcrumb-item"><a href="{% url 'articles' %}"
-                                   class="text-decoration-none text-reset">Статті</a></li>
-    <li class="breadcrumb-item" aria-current="page">Додавання статті</li>
+<li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-reset">Головна</a>
+</li>
+<li class="breadcrumb-item"><a href="{% url 'articles' %}"
+                               class="text-decoration-none text-reset">Статті</a></li>
+<li class="breadcrumb-item" aria-current="page">Додавання статті</li>
 {% endblock %}
 
 {% block content %}
@@ -19,17 +19,21 @@
 <br>
 
 <div class="container-fluid">
-    <h2>Додавання статті</h2>
+    <div class="row">
+        <div class="col-md-2">
+            <h2>Додавання статті</h2>
 
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
 
-        {{ form.as_p }}
+                {{ form.as_p }}
 
-        <input type="hidden" id="user_pk" value={{request.user.pk}}>
+                <input type="hidden" id="user_pk" value={{request.user.pk}}>
 
-        <button type="submit">Додати</button>
-    </form>
+                <button class="btn btn-outline-secondary btn-md" type="submit">Додати</button>
+            </form>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

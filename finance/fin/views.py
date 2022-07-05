@@ -140,9 +140,14 @@ class EditArticle(UpdateView):
     :template_name:`fin/edit_article.html`
     """
     model = Article
+    form_class = ArticleForm
     template_name = 'fin/edit_article.html'
-    fields = ['title', 'photo']
     context_object_name = 'article'
+
+    def get_form_kwargs(self):
+        kwargs = super(EditArticle, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
 
 class AddArticle(CreateView):

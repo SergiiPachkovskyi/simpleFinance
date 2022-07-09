@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django.contrib.auth import login, logout
@@ -28,7 +28,6 @@ def index(request, current_year: Optional[int] = None, current_month: Optional[i
     :return: render fin/index.html
     """
     context = dict()
-    print(type(request))
     if request.user.is_authenticated:
         articles = Article.objects.filter(user_id=request.user.id)
         cf_months = CashFlow.objects.filter(article__user_id=request.user.id).distinct('fin_month')
@@ -325,7 +324,7 @@ def article_graph(request, pk: int):
     """
     context = dict()
     if request.user.is_authenticated:
-        article = Article.objects.get(pk=pk)
+        article = get_object_or_404(Article, pk=pk)
 
         cash_flows = CashFlow.objects.filter(article=article).distinct('fin_month').order_by('fin_month')
 

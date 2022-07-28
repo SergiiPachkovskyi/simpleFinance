@@ -49,7 +49,7 @@ class ArticleForm(forms.ModelForm):
 
 class CashFlowForm(forms.ModelForm):
     """A class to represent a CashFlows form."""
-    fin_month = forms.DateField(label="Дата", widget=forms.DateInput(attrs={'class': "form-control"}))
+    fin_month = forms.DateField(label="Дата", widget=forms.DateInput(attrs={'class': "form-control", 'placeholder': "дата в форматі 01.01.2022"}))
     is_profit = forms.BooleanField(label="Прибуток", required=False,
                                    widget=forms.CheckboxInput(attrs={'class': "form-check-input"}))
     sum = forms.FloatField(label="Сума", widget=forms.NumberInput(attrs={'class': "form-control"}))

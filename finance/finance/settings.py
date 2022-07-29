@@ -16,41 +16,41 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d=_i8$eo0t(ui$4r9f7!1t8=ua-uu6slz9!160$f@xehy5jq_y'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+# # Quick-start development settings - unsuitable for production
+# # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
+#
+# # SECURITY WARNING: keep the secret key used in production secret!
+# SECRET_KEY = 'django-insecure-d=_i8$eo0t(ui$4r9f7!1t8=ua-uu6slz9!160$f@xehy5jq_y'
+#
+# # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = True
+#
+# ALLOWED_HOSTS = []
 
 
 # Application definition
 
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'debug_toolbar',
-    'fin.apps.FinConfig',
-]
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-]
+# INSTALLED_APPS = [
+#     'django.contrib.admin',
+#     'django.contrib.auth',
+#     'django.contrib.contenttypes',
+#     'django.contrib.sessions',
+#     'django.contrib.messages',
+#     'django.contrib.staticfiles',
+#     'debug_toolbar',
+#     'fin.apps.FinConfig',
+# ]
+#
+# MIDDLEWARE = [
+#     'django.middleware.security.SecurityMiddleware',
+#     'django.contrib.sessions.middleware.SessionMiddleware',
+#     'django.middleware.common.CommonMiddleware',
+#     'django.middleware.csrf.CsrfViewMiddleware',
+#     'django.contrib.auth.middleware.AuthenticationMiddleware',
+#     'django.contrib.messages.middleware.MessageMiddleware',
+#     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+#     'debug_toolbar.middleware.DebugToolbarMiddleware',
+# ]
 
 ROOT_URLCONF = 'finance.urls'
 
@@ -76,26 +76,26 @@ WSGI_APPLICATION = 'finance.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        # SQLite
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-        # MySQL
-        # 'ENGINE': 'django.db.backends.mysql',
-        # 'NAME': 'simple_finance',
-        # 'USER': 'root',
-        # 'PASSWORD': 'Saint32366n!',
-        # 'HOST': 'localhost',
-        # PostgresSQL
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'simple_finance',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         # SQLite
+#         # 'ENGINE': 'django.db.backends.sqlite3',
+#         # 'NAME': BASE_DIR / 'db.sqlite3',
+#         # MySQL
+#         # 'ENGINE': 'django.db.backends.mysql',
+#         # 'NAME': 'simple_finance',
+#         # 'USER': 'root',
+#         # 'PASSWORD': 'Saint32366n!',
+#         # 'HOST': 'localhost',
+#         # PostgresSQL
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'simple_finance',
+#         'USER': 'postgres',
+#         'PASSWORD': 'admin',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 
 # Password validation
@@ -133,10 +133,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'finance/static'),
-]
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'finance/static'),
+# ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -150,3 +150,9 @@ MEDIA_URL = '/media/'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+
+try:
+    from .local_settings import *
+except ImportError:
+    from .prod_settings import *

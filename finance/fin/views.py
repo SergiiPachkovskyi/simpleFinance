@@ -226,13 +226,13 @@ class CashFlows(ListView):
     def get_queryset(self):
         date_ = self.request.GET.get('d')
         if date_ is None:
-            return CashFlow.objects.filter(article__user_id=self.request.user.id)
+            return CashFlow.objects.filter(article__user_id=self.request.user.id).select_related('article')
         else:
             start_date = datetime.strptime(date_ + '-01', '%Y-%m-%d')
             end_date = datetime.strptime(date_ + '-' + str(monthrange(start_date.year, start_date.month)[1]),
                                          '%Y-%m-%d')
             return CashFlow.objects.filter(article__user_id=self.request.user.id,
-                                           fin_month__range=(start_date, end_date))
+                                           fin_month__range=(start_date, end_date)).select_related('article')
 
     def get_context_data(self, **kwargs):
         context = super(CashFlows, self).get_context_data(**kwargs)

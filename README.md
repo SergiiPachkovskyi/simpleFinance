@@ -14,7 +14,7 @@ Web program for managing income and expenses in the section of articles. Provide
 * postgresql 14
 * bootstrap 5.2
 * highcharts
-* pytest
+* unittest
 * html
 * css
 * js

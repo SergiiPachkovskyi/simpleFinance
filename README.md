@@ -4,9 +4,9 @@ Simple Finance
 # General info
 Web program for managing income and expenses in the section of articles. Provides a convenient review of monthly finances and the formation of a schedule for the use of a specific article.
 
-![](finance/finance/static/finance/images/SF.png)
+![](finance/static/finance/images/SF.png)
 
-![](finance/finance/static/finance/images/SF_graph.png)
+![](finance/static/finance/images/SF_graph.png)
 
 # Technologies
 * python 3
